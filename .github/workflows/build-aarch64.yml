@@ -1,0 +1,28 @@
+name: Build ttyd (aarch64)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install deps
+        run: |
+          sudo apt update
+          sudo apt install -y cmake g++ libjson-c-dev libwebsockets-dev
+
+      - name: Build
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          make -j$(nproc)
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ttyd-aarch64
+          path: build/ttyd
