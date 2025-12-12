@@ -8,21 +8,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y cmake g++ libjson-c-dev libwebsockets-dev
 
-      - name: Build
+      - name: Build ttyd
         run: |
-          mkdir build && cd build
+          mkdir build
+          cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
           make -j$(nproc)
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ttyd-aarch64
           path: build/ttyd
